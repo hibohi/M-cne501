@@ -1,8 +1,135 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Eye, EyeOff, Flame, Lock, CheckCircle2, Clock, Target, Brain, Zap, Lightbulb, Trophy, BarChart3, Play, Pause, RotateCcw, Download, AlertTriangle, Search, BookOpen, Swords, GraduationCap, Star, Timer, Award } from "lucide-react";
+import { Eye, EyeOff, Flame, Lock, CheckCircle2, Clock, Target, Brain, Zap, Lightbulb, Trophy, BarChart3, Play, Pause, RotateCcw, Download, AlertTriangle, Search, BookOpen, Swords, GraduationCap, Star, Timer, Award, TrendingUp, Users, DollarSign, PieChart, ArrowRight, ChevronRight, Sparkles, Crown, Medal, Target as TargetIcon, Book, Calculator, Layers, GitBranch, Network, Shield, Rocket } from "lucide-react";
 
 const BG = "#fbfaf8";
 const CARD_BORDER = "#e8e6e1";
+
+// --- HERO SVG ILLUSTRATION ---
+function HeroIllustration() {
+  return (
+    <svg viewBox="0 0 400 200" className="w-full h-[200px] opacity-90">
+      {/* Background gradient */}
+      <defs>
+        <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#f6f5f3"/>
+          <stop offset="100%" stopColor="#e8e6e1"/>
+        </linearGradient>
+        <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#111"/>
+          <stop offset="100%" stopColor="#444"/>
+        </linearGradient>
+      </defs>
+      
+      {/* Base platform */}
+      <rect x="50" y="160" width="300" height="8" rx="4" fill="#e8e6e1"/>
+      
+      {/* Left figure - candidate */}
+      <g transform="translate(80, 80)">
+        <circle cx="20" cy="20" r="12" fill="#111"/>
+        <rect x="10" y="35" width="20" height="25" rx="4" fill="#333"/>
+        <rect x="5" y="60" width="10" height="20" rx="3" fill="#555"/>
+        <rect x="25" y="60" width="10" height="20" rx="3" fill="#555"/>
+        {/* Thinking bubble */}
+        <ellipse cx="45" cy="10" rx="18" ry="12" fill="white" stroke="#e8e6e1" strokeWidth="1.5"/>
+        <text x="45" y="14" textAnchor="middle" fontSize="8" fontWeight="600">MECE</text>
+        <circle cx="32" cy="18" r="3" fill="white" stroke="#e8e6e1" strokeWidth="1.5"/>
+      </g>
+      
+      {/* Center - pyramid structure */}
+      <g transform="translate(170, 60)">
+        <polygon points="30,0 60,60 0,60" fill="url(#accentGrad)"/>
+        <line x1="15" y1="30" x2="45" y2="30" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+        <line x1="30" y1="15" x2="30" y2="30" stroke="rgba(255,255,255,0.3)" strokeWidth="1"/>
+        <text x="30" y="48" textAnchor="middle" fontSize="7" fill="#666">Pyramid</text>
+      </g>
+      
+      {/* Right figure - interviewer */}
+      <g transform="translate(280, 80)">
+        <circle cx="20" cy="20" r="12" fill="#555"/>
+        <rect x="10" y="35" width="20" height="25" rx="4" fill="#666"/>
+        <rect x="5" y="60" width="10" height="20" rx="3" fill="#777"/>
+        <rect x="25" y="60" width="10" height="20" rx="3" fill="#777"/>
+        {/* Clipboard */}
+        <rect x="-15" y="30" width="18" height="24" rx="2" fill="white" stroke="#e8e6e1" strokeWidth="1.5"/>
+        <line x1="-10" y1="38" x2="-2" y2="38" stroke="#111" strokeWidth="1"/>
+        <line x1="-10" y1="44" x2="-2" y2="44" stroke="#111" strokeWidth="1"/>
+        <line x1="-10" y1="50" x2="-5" y2="50" stroke="#111" strokeWidth="1"/>
+      </g>
+      
+      {/* Connection lines */}
+      <path d="M110 100 Q150 90 170 100" stroke="#e8e6e1" strokeWidth="2" fill="none" strokeDasharray="4 3"/>
+      <path d="M230 100 Q250 90 280 100" stroke="#e8e6e1" strokeWidth="2" fill="none" strokeDasharray="4 3"/>
+      
+      {/* Floating icons */}
+      <g transform="translate(140, 30)">
+        <rect x="-8" y="-8" width="16" height="16" rx="3" fill="white" stroke="#111" strokeWidth="1.5"/>
+        <text x="0" y="4" textAnchor="middle" fontSize="10" fontWeight="bold">✓</text>
+      </g>
+      <g transform="translate(240, 25)">
+        <polygon points="0,-10 8,5 -8,5" fill="white" stroke="#111" strokeWidth="1.5"/>
+        <text x="0" y="3" textAnchor="middle" fontSize="8" fontWeight="bold">★</text>
+      </g>
+    </svg>
+  );
+}
+
+// --- CONCEPT VISUALIZATION COMPONENTS ---
+function ConceptIcon({ type, size = 24 }: { type: string; size?: number }) {
+  const iconMap: Record<string, JSX.Element> = {
+    mece: <Layers size={size} className="text-blue-600"/>,
+    pyramid: <TrendingUp size={size} className="text-green-600"/>,
+    "issue-hyp": <GitBranch size={size} className="text-purple-600"/>,
+    "80-20": <Zap size={size} className="text-yellow-600"/>,
+    "3c": <Users size={size} className="text-indigo-600"/>,
+    "4p": <PieChart size={size} className="text-pink-600"/>,
+    porter: <Shield size={size} className="text-red-600"/>,
+    valuechain: <Network size={size} className="text-teal-600"/>,
+    bcg: <Star size={size} className="text-orange-600"/>,
+    profit: <DollarSign size={size} className="text-emerald-600"/>,
+    bizsit: <Book size={size} className="text-cyan-600"/>,
+    sizing: <Calculator size={size} className="text-violet-600"/>,
+    conversion: <ArrowRight size={size} className="text-rose-600"/>,
+    be: <TargetIcon size={size} className="text-amber-600"/>,
+    pricing: <DollarSign size={size} className="text-lime-600"/>,
+    ansoff: <Rocket size={size} className="text-sky-600"/>,
+    ma: <Users size={size} className="text-fuchsia-600"/>,
+    npv: <Clock size={size} className="text-slate-600"/>,
+    seg: <Users size={size} className="text-coral-600"/>,
+    ltv: <TrendingUp size={size} className="text-green-700"/>,
+    supplydemand: <PieChart size={size} className="text-blue-700"/>,
+    scale: <Layers size={size} className="text-gray-600"/>,
+    leverage: <TargetIcon size={size} className="text-red-700"/>,
+    hypothesis: <Sparkles size={size} className="text-yellow-700"/>,
+    behavioral: <Brain size={size} className="text-purple-700"/>,
+  };
+  return iconMap[type] || <Brain size={size}/>;
+}
+
+// --- ENHANCED PROFIT TREE SVG ---
+function ProfitTreeSVG() {
+  return (
+    <svg viewBox="0 0 260 120" className="w-full h-[110px]">
+      <defs>
+        <linearGradient id="profitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#111"/>
+          <stop offset="100%" stopColor="#333"/>
+        </linearGradient>
+      </defs>
+      <rect x="90" y="6" width="80" height="22" rx="8" fill="url(#profitGrad)" />
+      <text x="130" y="20" textAnchor="middle" fill="white" fontSize="10" fontWeight="600">Profit</text>
+      <line x1="130" y1="28" x2="60" y2="50" stroke="#e8e6e1" strokeWidth="1.5" />
+      <line x1="130" y1="28" x2="200" y2="50" stroke="#e8e6e1" strokeWidth="1.5" />
+      <rect x="20" y="50" width="80" height="20" rx="8" fill="#f6f5f3" stroke="#e8e6e1" />
+      <rect x="160" y="50" width="80" height="20" rx="8" fill="#f6f5f3" stroke="#e8e6e1" />
+      <text x="60" y="62" textAnchor="middle" fontSize="9" fontWeight="500">Revenue</text>
+      <text x="200" y="62" textAnchor="middle" fontSize="9" fontWeight="500">Cost</text>
+      <line x1="60" y1="70" x2="30" y2="92" stroke="#e8e6e1" />
+      <line x1="60" y1="70" x2="90" y2="92" stroke="#e8e6e1" />
+      <rect x="10" y="92" width="40" height="18" rx="6" fill="white" stroke="#e8e6e1" /><text x="30" y="104" textAnchor="middle" fontSize="8" fontWeight="500">Price</text>
+      <rect x="70" y="92" width="40" height="18" rx="6" fill="white" stroke="#e8e6e1" /><text x="90" y="104" textAnchor="middle" fontSize="8" fontWeight="500">Vol</text>
+    </svg>
+  );
+}
 
 // --- CORE CASE DATA (unchanged) ---
 const CASE_DATA = {
@@ -188,25 +315,6 @@ function MiniTree({ type }:{type:string}){
       <line x1="60" y1="16" x2="25" y2="30" stroke="#e8e6e1"/><line x1="60" y1="16" x2="95" y2="30" stroke="#e8e6e1"/>
       <rect x="5" y="30" width="40" height="12" rx="5" fill="#f6f5f3" stroke="#e8e6e1"/><rect x="75" y="30" width="40" height="12" rx="5" fill="#f6f5f3" stroke="#e8e6e1"/>
       <text x="25" y="38" textAnchor="middle" fontSize="6">{n[1]}</text><text x="95" y="38" textAnchor="middle" fontSize="6">{n[2]}</text>
-    </svg>
-  );
-}
-
-function ProfitTreeSVG() {
-  return (
-    <svg viewBox="0 0 260 120" className="w-full h-[110px]">
-      <rect x="90" y="6" width="80" height="22" rx="8" fill="#111" />
-      <text x="130" y="20" textAnchor="middle" fill="white" fontSize="10" fontWeight="600">Profit</text>
-      <line x1="130" y1="28" x2="60" y2="50" stroke="#e8e6e1" strokeWidth="1.5" />
-      <line x1="130" y1="28" x2="200" y2="50" stroke="#e8e6e1" strokeWidth="1.5" />
-      <rect x="20" y="50" width="80" height="20" rx="8" fill="#f6f5f3" stroke="#e8e6e1" />
-      <rect x="160" y="50" width="80" height="20" rx="8" fill="#f6f5f3" stroke="#e8e6e1" />
-      <text x="60" y="62" textAnchor="middle" fontSize="9">Revenue</text>
-      <text x="200" y="62" textAnchor="middle" fontSize="9">Cost</text>
-      <line x1="60" y1="70" x2="30" y2="92" stroke="#e8e6e1" />
-      <line x1="60" y1="70" x2="90" y2="92" stroke="#e8e6e1" />
-      <rect x="10" y="92" width="40" height="18" rx="6" fill="white" stroke="#e8e6e1" /><text x="30" y="104" textAnchor="middle" fontSize="8">Price</text>
-      <rect x="70" y="92" width="40" height="18" rx="6" fill="white" stroke="#e8e6e1" /><text x="90" y="104" textAnchor="middle" fontSize="8">Vol</text>
     </svg>
   );
 }
@@ -462,6 +570,34 @@ export default function App() {
         <main className="flex-1 min-w-0 max-w-3xl mx-auto lg:mx-0 overflow-hidden">
           {activeTab==="dashboard" && (
             <div className="space-y-5">
+              {/* Hero Illustration Section */}
+              <div className="rounded-[20px] bg-gradient-to-r from-[#f6f5f3] to-white border p-6" style={{ borderColor:CARD_BORDER }}>
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black text-white text-[10px] font-semibold tracking-wide uppercase"><Sparkles size={12}/> Welcome to Crack-It Academy</div>
+                    <h2 className="mt-3 text-[20px] md:text-[24px] font-bold leading-tight">Master Consulting Interviews</h2>
+                    <p className="mt-2 text-[13px] text-[#666] leading-relaxed">80-day journey • 25 frameworks • 12 challenges • Math mastery</p>
+                  </div>
+                  <div className="hidden md:block w-[180px] h-[120px]">
+                    <HeroIllustration/>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-3 mt-4">
+                  <div className="rounded-xl bg-white border p-3 text-center" style={{ borderColor:CARD_BORDER }}>
+                    <div className="text-[22px] font-bold text-black">{completedDays.size}</div>
+                    <div className="text-[10px] uppercase tracking-wide opacity-60 mt-1">Days Done</div>
+                  </div>
+                  <div className="rounded-xl bg-white border p-3 text-center" style={{ borderColor:CARD_BORDER }}>
+                    <div className="text-[22px] font-bold text-black">{conceptsViewed.size}/25</div>
+                    <div className="text-[10px] uppercase tracking-wide opacity-60 mt-1">Concepts</div>
+                  </div>
+                  <div className="rounded-xl bg-white border p-3 text-center" style={{ borderColor:CARD_BORDER }}>
+                    <div className="text-[22px] font-bold text-black">{xp}</div>
+                    <div className="text-[10px] uppercase tracking-wide opacity-60 mt-1">Total XP</div>
+                  </div>
+                </div>
+              </div>
+
               {/* XP + Next Challenge */}
               <div className="grid md:grid-cols-[1.4fr_1fr] gap-3">
                 <div className="rounded-[20px] bg-black text-white p-5 flex items-center justify-between">
@@ -654,12 +790,13 @@ export default function App() {
             <div className="space-y-4">
               <div className="rounded-[20px] bg-white border p-5 md:p-6" style={{ borderColor:CARD_BORDER }}>
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h2 className="text-[18px] font-bold">Concepts & Frameworks • 25</h2>
+                  <h2 className="text-[18px] font-bold flex items-center gap-2"><Brain size={18}/> Concepts & Frameworks • 25</h2>
                   <div className="flex items-center gap-2">
                     <div className="relative"><Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-40"/><input value={conceptsSearch} onChange={e=>setConceptsSearch(e.target.value)} placeholder="Search..." className="h-8 pl-8 pr-3 rounded-full border bg-[#fbfaf8] text-xs w-[160px] md:w-[220px] outline-none focus:border-black" style={{ borderColor:CARD_BORDER }}/></div>
                     <span className="text-[11px] opacity-60">{conceptsViewed.size}/25 viewed</span>
                   </div>
                 </div>
+                <p className="mt-2 text-[12px] text-[#666]">Master 25 essential consulting frameworks — click to expand for examples, traps, and 2-min drills.</p>
                 <div className="mt-5 grid md:grid-cols-2 gap-4">
                   {filteredConcepts.map(f=>{
                     const expanded = expandedConcept===f.id;
@@ -667,7 +804,11 @@ export default function App() {
                     return (
                       <div key={f.id} className={`rounded-[16px] border p-4 transition cursor-pointer ${expanded?"bg-black text-white border-black":"bg-[#fbfaf8] hover:bg-white"} `} style={{ borderColor: expanded?undefined:CARD_BORDER }} onClick={()=>{setExpandedConcept(expanded?null:f.id); setConceptsViewed(s=>{const ns=new Set(s); ns.add(f.id); return ns;}); if(!viewed) setXp(x=>x+5);}}>
                         <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-center gap-2"><span className="text-[16px]">{f.icon}</span><span className="text-[13px] font-bold">{f.name}</span>{viewed&&<CheckCircle2 size={12} className={expanded?"text-white":"text-green-600"}/>}</div>
+                          <div className="flex items-center gap-2">
+                            <ConceptIcon type={f.id} size={20}/>
+                            <span className="text-[13px] font-bold">{f.name}</span>
+                            {viewed&&<CheckCircle2 size={12} className={expanded?"text-white":"text-green-600"}/>}
+                          </div>
                           <span className={`px-2 py-1 rounded-full text-[10px] font-semibold ${expanded?"bg-white/20":"bg-white border"}`} style={{ borderColor: expanded?undefined:CARD_BORDER }}>2-min drill</span>
                         </div>
                         <div className={`mt-2 text-[11px] uppercase tracking-wide font-semibold ${expanded?"opacity-60":"opacity-50"}`}>When: {f.when}</div>
